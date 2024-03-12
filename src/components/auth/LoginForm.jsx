@@ -1,9 +1,13 @@
 import { useForm } from "react-hook-form";
 import Field from "../common/Field";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuthProvider";
+
 
 export default function LoginForm() {
     const navigate = useNavigate()
+    const { auth, setAuth } = useAuth();
+    console.log(auth, "auth");
     const {
         register,
         handleSubmit,
@@ -11,7 +15,8 @@ export default function LoginForm() {
     } = useForm()
 
     const onSubmit = (formData) => {
-        console.log(formData);
+        const user = { ...formData }
+        setAuth({ user })
         navigate("/")
     }
 
