@@ -5,9 +5,16 @@ import notificationIcon from "../../assets/icons/notification.svg"
 import logoutIcon from "../../assets/icons/logout.svg"
 import avatarIcon from "../../assets/images/avatars/avatar_1.png"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../hooks/useAuthProvider";
 
 export default function Header() {
     const navigate = useNavigate()
+    const { auth, setAuth } = useAuth();
+    console.log(auth);
+    const handleLogout = () => {
+        setAuth({})
+        navigate("/login")
+    }
     return (
         <nav className="sticky top-0 z-50 border-b border-[#3F3F3F] bg-[#1E1F24] py-4">
             <div className="container flex flex-col items-center justify-between gap-6 sm:flex-row">
@@ -25,7 +32,7 @@ export default function Header() {
                     <button className="icon-btn">
                         <img src={notificationIcon} alt="Notification" />
                     </button>
-                    <button className="icon-btn" onClick={() => navigate("/login")}>
+                    <button className="icon-btn" onClick={handleLogout}>
                         <img src={logoutIcon} alt="Logout" />
                     </button>
 
