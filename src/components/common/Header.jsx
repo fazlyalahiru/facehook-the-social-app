@@ -10,7 +10,7 @@ import { useAuth } from "../../hooks/useAuthProvider";
 export default function Header() {
     const navigate = useNavigate()
     const { auth, setAuth } = useAuth();
-    console.log(auth);
+    const user = auth?.user;
     const handleLogout = () => {
         setAuth({})
         navigate("/login")
@@ -37,7 +37,7 @@ export default function Header() {
                     </button>
 
                     <button className="flex-center !ml-8 gap-3">
-                        <span className="text-lg font-medium lg:text-xl">Sumit</span>
+                        <span className="text-lg font-medium lg:text-xl">{user?.firstName}</span>
                         <img className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
                             src={avatarIcon} alt="avatar" />
                     </button>
