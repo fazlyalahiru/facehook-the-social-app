@@ -1,23 +1,29 @@
 import React from "react";
 import { useAuth } from "../hooks/useAuthProvider";
 import { useAxios } from "../hooks/useAxios";
+import { useProfile } from "../hooks/useProfileProvider";
+import { actions } from "../actions";
 
 export default function Profile() {
-    const [user, setUser] = React.useState(null);
-    const [posts, setPosts] = React.useState([]);
-    const [loading, setLoading] = React.useState(false)
+    const { state, dispatch } = useProfile()
+    console.log(state, "state",);
+    // const [user, setUser] = React.useState(null);
+    // const [posts, setPosts] = React.useState([]);
+    const [, setLoading] = React.useState(false)
     const { api } = useAxios();
     const { auth } = useAuth();
 
     React.useEffect(() => {
 
         const fetchProfile = async () => {
-            setLoading(true);
+            dispatch({ type: actions.profile.DATA_FETCHING })
             try {
                 const res = await api.get(`/profile/${auth?.user?.id}`);
-                console.log(res);
-                const user = res.data.user;
-                setUser(user)
+                console.log(res.data, "res.data");
+                if (res.status === 200) {
+                    dispatch({ type: actions.profile.DATA_FETCHED, data: res.data })
+                }
+                // setUser(user)
             } catch (error) {
                 console.log(error);
                 setLoading(false);
@@ -28,8 +34,11 @@ export default function Profile() {
         fetchProfile();
     }, [])
 
-    if (loading) <div>Fetching...</div>
+    if (state?.loading) <div>Fetching...</div>
     return (
-        <p>{user?.lastName}</p>
+        <>
+            <p>{state?.user?.lastName}</p>
+            <p>{state?.posts.length}</p>
+        </>
     );
 }

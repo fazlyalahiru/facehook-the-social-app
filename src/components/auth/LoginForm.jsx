@@ -7,7 +7,7 @@ import Field from "../common/Field";
 
 export default function LoginForm() {
     const navigate = useNavigate()
-    const { auth, setAuth } = useAuth();
+    const { setAuth } = useAuth();
     const {
         register,
         handleSubmit,

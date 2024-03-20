@@ -1,16 +1,16 @@
-import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo.svg"
-import homeIcon from "../../assets/icons/home.svg"
-import notificationIcon from "../../assets/icons/notification.svg"
-import logoutIcon from "../../assets/icons/logout.svg"
-import avatarIcon from "../../assets/images/avatars/avatar_1.png"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
+import homeIcon from "../../assets/icons/home.svg";
+import logoutIcon from "../../assets/icons/logout.svg";
+import notificationIcon from "../../assets/icons/notification.svg";
+import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../hooks/useAuthProvider";
+import { useProfile } from "../../hooks/useProfileProvider";
 
 export default function Header() {
     const navigate = useNavigate()
     const { auth, setAuth } = useAuth();
-    const user = auth?.user;
+    const { state } = useProfile()
+    const user = state?.user ?? auth?.user;
     const handleLogout = () => {
         setAuth({})
         navigate("/login")
@@ -40,7 +40,7 @@ export default function Header() {
                         <button className="flex-center !ml-8 gap-3" >
                             <span className="text-lg font-medium lg:text-xl">{user?.firstName}</span>
                             <img className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
-                                src={avatarIcon} alt="avatar" />
+                                src={`http://localhost:3000/${user.avatar}`} alt="avatar" />
                         </button>
                     </Link>
                 </div>
