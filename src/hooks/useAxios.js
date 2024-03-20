@@ -6,7 +6,7 @@ export const useAxios = () => {
     const { auth, setAuth } = useAuth();
     useEffect(() => {
         const requestIntercept = api.interceptors.request.use((config) => {
-            const authToken = auth.authToken;
+            const authToken = auth.token;
             if (authToken) {
                 config.headers.Authorization = `Bearer ${authToken}`
             }
@@ -27,8 +27,8 @@ export const useAxios = () => {
                     const refreshToken = auth?.refreshToken;
                     const response = await api.post("/auth/refresh-token", { refreshToken });
                     const { token } = response.data;
-                    console.log("new token", token);
-                    setAuth({ ...auth, authToken: token })
+                    console.log("new token from useAxios", token);
+                    setAuth({ ...auth, token: token })
                     originalRequest.headers.Authorization = `Bearer ${token}`
                     return api(originalRequest)
                 }
@@ -40,6 +40,6 @@ export const useAxios = () => {
             api.interceptors.request.eject(requestIntercept),
                 api.interceptors.response.eject(responseIntercept)
         }
-    }, [auth.authToken])
+    }, [auth.token])
     return { api }
 }

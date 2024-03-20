@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom"
 import { useAuth } from "../hooks/useAuthProvider";
 
 export default function PrivateRoute() {
-    const { auth } = useAuth()    
+    const { auth } = useAuth()
     return (
         <div>
             {

@@ -1,27 +1,45 @@
 import { useForm } from "react-hook-form";
-import Field from "../common/Field";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../api/api";
 import { useAuth } from "../../hooks/useAuthProvider";
+import Field from "../common/Field";
 
 
 export default function LoginForm() {
     const navigate = useNavigate()
     const { auth, setAuth } = useAuth();
-    console.log(auth, "auth");
     const {
         register,
         handleSubmit,
         formState: { errors },
+        setError
     } = useForm()
 
-    const onSubmit = (formData) => {
+    const onSubmit = async (formData) => {
         const user = { ...formData }
-        setAuth({ user })
-        navigate("/")
-    }
+        try {
+            const res = await api.post("/auth/login", user);
+            const data = res.data;
+            if (res.status === 200 && data.token) {
+                const user = data.user;
+                const token = data.token.token;
+                console.log(token, "new token after login");
+                const refreshToken = data.token.refreshToken;
 
+                setAuth({ user, token, refreshToken })
+                navigate("/")
+
+            }
+        } catch (err) {
+            setError("random", {
+                type: "random",
+                message: "No user exist with this email"
+            })
+        }
+    }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <p className="text-red-600">{errors?.random && errors?.random?.message}</p>
             <Field htmlFor={"email"} label={"Email"} error={errors.email}>
                 <input
                     {...register("email", { required: "Email is required field" })}
@@ -47,7 +65,7 @@ export default function LoginForm() {
             </Field>
             <Field>
                 <button
-                    className="auth-input bg-lwsGreen font-bold text-deepDark transition-all hover:opacity-90"
+                    className="auth-input bg-lwsGreen font-bold text-deepDark transition-all hover:opacity-90 my-4"
                     type="submit"
                 >
                     Login

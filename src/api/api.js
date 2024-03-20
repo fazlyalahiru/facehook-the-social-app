@@ -1,5 +1,4 @@
-import { Axios } from "axios";
-
-export const api = Axios.create({
-    baseURL: `${import.meta.env.SERVER_BASE_URL}`
+import axios from "axios";
+export const api = axios.create({
+    baseURL: 'http://localhost:3000'
 })

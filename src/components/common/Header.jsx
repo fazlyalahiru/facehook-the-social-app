@@ -36,11 +36,13 @@ export default function Header() {
                         <img src={logoutIcon} alt="Logout" />
                     </button>
 
-                    <button className="flex-center !ml-8 gap-3">
-                        <span className="text-lg font-medium lg:text-xl">{user?.firstName}</span>
-                        <img className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
-                            src={avatarIcon} alt="avatar" />
-                    </button>
+                    <Link to={"/me"}>
+                        <button className="flex-center !ml-8 gap-3" >
+                            <span className="text-lg font-medium lg:text-xl">{user?.firstName}</span>
+                            <img className="max-h-[32px] max-w-[32px] lg:max-h-[44px] lg:max-w-[44px]"
+                                src={avatarIcon} alt="avatar" />
+                        </button>
+                    </Link>
                 </div>
 
             </div>
