@@ -22,11 +22,11 @@ export default function LoginForm() {
             const data = res.data;
             if (res.status === 200 && data.token) {
                 const user = data.user;
-                const token = data.token.token;
-                console.log(token, "new token after login");
+                const authToken = data.token.token;
+                console.log(authToken, "new token after login");
                 const refreshToken = data.token.refreshToken;
 
-                setAuth({ user, token, refreshToken })
+                setAuth({ user, authToken, refreshToken })
                 navigate("/")
 
             }
